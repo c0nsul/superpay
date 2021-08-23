@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Payments\FakePaymentCodeGenerator;
+use App\Payments\PaymentCodeGenerator;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
@@ -12,8 +14,11 @@ class PaymentsController extends Controller
         return view("payments.create");
     }
 
-
-    public function store(Request $request)
+    /**
+     * @param Request $request
+     * @param PaymentCodeGenerator $paymentCodeGenerator
+     */
+    public function store(Request $request, PaymentCodeGenerator $paymentCodeGenerator)
     {
         $request->validate([
             'email' => 'required|email',
@@ -29,6 +34,7 @@ class PaymentsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'message' => $request->message,
+            'code' => $paymentCodeGenerator->generate(),
         ]);
     }
 }

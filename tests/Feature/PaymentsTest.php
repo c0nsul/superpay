@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Payment;
 use App\Models\User;
+use App\Payments\FakePaymentCodeGenerator;
+use App\Payments\PaymentCodeGenerator;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -173,6 +175,43 @@ class PaymentsTest extends TestCase
         $response->assertStatus(422);
         $this->assertEquals(0, Payment::count());
         $response->assertJsonValidationErrors('amount');
+    }
+
+    /** @test */
+    public function code_field_is_required_to_create_payment()
+    {
+
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
+        $this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
+
+        $response = $this->actingAs($user)->json('post', "payments", [
+            'email' => 'test@mail.com',
+            'amount' => '5000',
+            'currency' => 'usd',
+            'name' => 'Tob Bradly',
+            'description' => 'payment desc',
+            'message' => 'Hello',
+            //'code' => $fakePaymentCodeGenerator->generate(),
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertEquals(1, Payment::count());
+
+        tap(
+            Payment::first(), function ($payment) use ($user) {
+            $this->assertEquals($user->id, $payment->user_id);
+            $this->assertEquals('test@mail.com', $payment->email);
+            $this->assertEquals('5000', $payment->amount);
+            $this->assertEquals('usd', $payment->currency);
+            $this->assertEquals('Tob Bradly', $payment->name);
+            $this->assertEquals('Hello', $payment->message);
+            $this->assertEquals('payment desc', $payment->description);
+            $this->assertEquals('TESTCODE123', $payment->code);
+        });
     }
 
 }

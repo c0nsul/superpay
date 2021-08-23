@@ -17,5 +17,6 @@ class Payment extends Model
         'name',
         'description',
         'message',
+        'code',
     ];
 }

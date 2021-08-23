@@ -17,6 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->unsignedInteger('user_id');
             $table->integer('amount');
+            $table->string('code')->unique();
             $table->string('currency');
             $table->string('email');
             $table->string('name');
