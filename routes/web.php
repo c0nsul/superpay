@@ -18,6 +18,10 @@ Route::get('payments/new', 'App\Http\Controllers\PaymentsController@create')
     ->name('payments.create')
     ->middleware('auth');
 
+Route::post('payments', 'App\Http\Controllers\PaymentsController@store')
+    ->name('payments.store')
+    ->middleware('auth');
+
 Route::get('login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
 
 //Auth::routes();
