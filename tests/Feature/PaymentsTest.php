@@ -77,6 +77,25 @@ class PaymentsTest extends TestCase
     }
 
     /** @test */
+    public function not_auth_user_can_create_new_payment()
+    {
+
+        $response = $this->json('post', "payments", [
+            'email' => 'test@mail.com',
+            'amount' => '5000',
+            'currency' => 'usd',
+            'name' => 'Tob Bradly',
+            'description' => 'payment desc',
+            'message' => 'Hello',
+        ]);
+
+        $response->assertStatus(401);
+
+        $this->assertEquals(0, Payment::count());
+    }
+
+
+    /** @test */
     public function email_field_is_required_to_create_payment()
     {
 
