@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
 {
+    protected $codeGenerator;
+
+    public function __construct(FakePaymentCodeGenerator $paymentCodeGenerator){
+        $this->codeGenerator = $paymentCodeGenerator;
+    }
 
     public function create()
     {
@@ -16,9 +21,8 @@ class PaymentsController extends Controller
 
     /**
      * @param Request $request
-     * @param PaymentCodeGenerator $paymentCodeGenerator
      */
-    public function store(Request $request, PaymentCodeGenerator $paymentCodeGenerator)
+    public function store(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -34,7 +38,7 @@ class PaymentsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'message' => $request->message,
-            'code' => $paymentCodeGenerator->generate(),
+            'code' => $this->codeGenerator->generate(),
         ]);
     }
 }

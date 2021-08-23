@@ -160,7 +160,6 @@ class PaymentsTest extends TestCase
     /** @test */
     public function amount_field_should_be_integer_to_create_payment()
     {
-
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->json('post', "payments", [
@@ -194,7 +193,6 @@ class PaymentsTest extends TestCase
             'name' => 'Tob Bradly',
             'description' => 'payment desc',
             'message' => 'Hello',
-            //'code' => $fakePaymentCodeGenerator->generate(),
         ]);
 
         $response->assertStatus(200);
