@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Payment;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PaymentsTest extends TestCase
 {
@@ -66,7 +65,7 @@ class PaymentsTest extends TestCase
         $this->assertEquals(1, Payment::count());
 
         tap(
-            Payment::first(), function ($payment) use($user){
+            Payment::first(), function ($payment) use ($user) {
             $this->assertEquals($user->id, $payment->user_id);
             $this->assertEquals('test@mail.com', $payment->email);
             $this->assertEquals('5000', $payment->amount);
