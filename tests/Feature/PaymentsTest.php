@@ -177,14 +177,14 @@ class PaymentsTest extends TestCase
     }
 
     /** @test */
-    public function code_field_is_required_to_create_payment()
+    public function code_field_added_for_creating_payment()
     {
 
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        $fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
-        $this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
+        //$fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
+        //$this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
 
         $response = $this->actingAs($user)->json('post', "payments", [
             'email' => 'test@mail.com',
