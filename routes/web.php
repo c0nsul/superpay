@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('invoices/new', 'App\Http\Controllers\InvoicesController@create')
-    ->name('invoices.create')
+Route::get('payments/new', 'App\Http\Controllers\PaymentsController@create')
+    ->name('payments.create')
     ->middleware('auth');
 
 Route::get('login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');

@@ -7,7 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class InvoicesTest extends TestCase
+class PaymentsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,7 +22,7 @@ class InvoicesTest extends TestCase
         $user = User::factory()->create();
 
         //routes and form
-        $this->actingAs($user)->get('invoices/new')
+        $this->actingAs($user)->get('payments/new')
             ->assertStatus(200)
             ->assertSee("Create new Invoice");
     }
@@ -37,7 +37,7 @@ class InvoicesTest extends TestCase
         $user = User::factory()->create();
 
         //routes and form
-        $response = $this->get('invoices/new');
+        $response = $this->get('payments/new');
 
         $response->assertStatus(302)->assertRedirect('login');
 
