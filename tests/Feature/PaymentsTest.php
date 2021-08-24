@@ -60,9 +60,11 @@ class PaymentsTest extends TestCase
             'name' => 'Tob Bradly',
             'description' => 'payment desc',
             'message' => 'Hello',
+            'code' => 'TESTCODE123',
         ]);
 
         $response->assertStatus(200);
+
 
         $this->assertEquals(1, Payment::count());
 
@@ -75,6 +77,7 @@ class PaymentsTest extends TestCase
             $this->assertEquals('Tob Bradly', $payment->name);
             $this->assertEquals('Hello', $payment->message);
             $this->assertEquals('payment desc', $payment->description);
+            $this->assertEquals('TESTCODE123', $payment->code);
         });
     }
 
@@ -183,7 +186,7 @@ class PaymentsTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        //$fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
+        $fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
         //$this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
 
         $response = $this->actingAs($user)->json('post', "payments", [
@@ -193,6 +196,7 @@ class PaymentsTest extends TestCase
             'name' => 'Tob Bradly',
             'description' => 'payment desc',
             'message' => 'Hello',
+            'code' => $fakePaymentCodeGenerator->generate(),
         ]);
 
         $response->assertStatus(200);

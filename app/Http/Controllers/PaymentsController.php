@@ -29,6 +29,7 @@ class PaymentsController extends Controller
             'amount' => 'required|integer|min:100',
             'currency' => 'required',
             'name' => 'required',
+            'code' => 'required',
         ]);
 
         $request->user()->payments()->create([
@@ -38,7 +39,8 @@ class PaymentsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'message' => $request->message,
-            'code' => $this->codeGenerator->generate(),
+            'code' => $request->code,
+            //'code' => $this->codeGenerator->generate(),
         ]);
     }
 }
