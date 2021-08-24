@@ -39,8 +39,9 @@ class PaymentsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'message' => $request->message,
-            'code' => $request->code,
+            //'code' => $request->code,
             //'code' => $this->codeGenerator->generate(),
+            'code' => app(PaymentCodeGenerator::class)->generate(),
         ]);
     }
 }

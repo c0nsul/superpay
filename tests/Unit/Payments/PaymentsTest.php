@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit\Payments;
 
 use App\Models\Payment;
 use App\Models\User;
@@ -9,6 +9,7 @@ use App\Payments\PaymentCodeGenerator;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+//use PHPUnit\Framework\TestCase;
 
 class PaymentsTest extends TestCase
 {
@@ -52,6 +53,8 @@ class PaymentsTest extends TestCase
 
         $user = User::factory()->create();
 
+        $fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
+        $this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
 
         $response = $this->actingAs($user)->json('post', "payments", [
             'email' => 'test@mail.com',
@@ -60,7 +63,7 @@ class PaymentsTest extends TestCase
             'name' => 'Tob Bradly',
             'description' => 'payment desc',
             'message' => 'Hello',
-            'code' => 'TESTCODE123',
+            'code' => $fakePaymentCodeGenerator->generate(),
         ]);
 
         $response->assertStatus(200);
@@ -186,8 +189,9 @@ class PaymentsTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
+
         $fakePaymentCodeGenerator = new FakePaymentCodeGenerator();
-        //$this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
+        $this->app->instance(PaymentCodeGenerator::class, $fakePaymentCodeGenerator);
 
         $response = $this->actingAs($user)->json('post', "payments", [
             'email' => 'test@mail.com',
@@ -215,5 +219,6 @@ class PaymentsTest extends TestCase
             $this->assertEquals('TESTCODE123', $payment->code);
         });
     }
+
 
 }
