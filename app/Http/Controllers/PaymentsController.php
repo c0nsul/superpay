@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Payments\FakePaymentCodeGenerator;
 use App\Payments\PaymentCodeGenerator;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
 {
     protected $codeGenerator;
-
-    public function __construct(FakePaymentCodeGenerator $paymentCodeGenerator){
-        $this->codeGenerator = $paymentCodeGenerator;
-    }
 
     public function create()
     {
@@ -39,8 +34,6 @@ class PaymentsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'message' => $request->message,
-            //'code' => $request->code,
-            //'code' => $this->codeGenerator->generate(),
             'code' => app(PaymentCodeGenerator::class)->generate(),
         ]);
     }
