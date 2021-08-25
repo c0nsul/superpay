@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('payments/new', 'App\Http\Controllers\PaymentsController@create')
+Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard');
+    //->middleware('auth');
+
+Route::get('payments/create', 'App\Http\Controllers\PaymentsController@create')
     ->name('payments.create')
     ->middleware('auth');
 
@@ -24,6 +27,4 @@ Route::post('payments', 'App\Http\Controllers\PaymentsController@store')
 
 Route::get('login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
 
-//Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
