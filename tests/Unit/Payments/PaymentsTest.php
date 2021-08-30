@@ -3,6 +3,7 @@
 namespace Tests\Unit\Payments;
 
 use App\Models\Payment;
+use App\Models\PaymentStatus;
 use App\Models\User;
 use App\Payments\FakePaymentCodeGenerator;
 use App\Payments\PaymentCodeGenerator;
@@ -26,7 +27,7 @@ class PaymentsTest extends TestCase
         $user = User::factory()->create();
 
         //routes and form
-        $response = $this->get('payments/new');
+        $response = $this->get('payments/create');
 
         $response->assertStatus(302)->assertRedirect('login');
     }
@@ -39,6 +40,8 @@ class PaymentsTest extends TestCase
 
         //user creation
         $user = User::factory()->create();
+
+        //wgere is auth????
 
         //routes and form
         $this->actingAs($user)->get('payments/new')
@@ -81,11 +84,12 @@ class PaymentsTest extends TestCase
             $this->assertEquals('Hello', $payment->message);
             $this->assertEquals('payment desc', $payment->description);
             $this->assertEquals('TESTCODE123', $payment->code);
+            $this->assertEquals(PaymentStatus::NEW, $payment->status_id);
         });
     }
 
     /** @test */
-    public function not_auth_user_can_create_new_payment()
+    public function not_auth_user_cant_create_new_payment()
     {
 
         $response = $this->json('post', "payments", [

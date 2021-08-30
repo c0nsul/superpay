@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentStatus;
 use App\Payments\PaymentCodeGenerator;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ class PaymentsController extends Controller
         ]);
 
         $request->user()->payments()->create([
+            'status_id' => PaymentStatus::NEW,
             'amount' => $request->amount,
             'currency' => $request->currency,
             'email' => $request->email,

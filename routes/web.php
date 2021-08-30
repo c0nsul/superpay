@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard');
-    //->middleware('auth');
+Route::get('/', 'App\Http\Controllers\DashboardController@index')->name('dashboard')->middleware('auth');
 
 Route::get('payments/create', 'App\Http\Controllers\PaymentsController@create')
     ->name('payments.create')

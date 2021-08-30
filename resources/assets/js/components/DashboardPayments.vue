@@ -44,7 +44,7 @@
         },
         methods: {
             fetch() {
-                // axios.get('...')
+                //axios.get('...')
             },
             activateTab(tab) {
                 this.activeTab = tab

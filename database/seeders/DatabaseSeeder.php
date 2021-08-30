@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\PaymentStatus;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->truncate();
+        $this->call(PaymentStatusSeeder::class);
+    }
+
+    protected function truncate()
+    {
+        PaymentStatus::truncate();
     }
 }
